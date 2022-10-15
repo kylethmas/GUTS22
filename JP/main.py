@@ -9,7 +9,7 @@ kobold_response = generate_response(correct_prompt, "http://nasty-ravens-stare-1
 
 image_prompt = correct_prompt + kobold_response + " - van gogh"
 
-print(image_prompt)
+print(correct_prompt + kobold_response)
 
 image_url = get_image(image_prompt)
 
