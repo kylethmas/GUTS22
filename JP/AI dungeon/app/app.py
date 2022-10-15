@@ -52,4 +52,5 @@ def game():
     #return render_template('game.html', user_image = output_url)
     #return render_template('game.html')
     #webbrowser.open(output_url)
+    print("edited this out so i dont use up all my API time")
 
