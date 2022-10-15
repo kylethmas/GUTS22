@@ -1,8 +1,8 @@
 import requests
 
-def generate_prompt(text_prompt):
+def generate_prompt(text_prompt, api_link):
 
-    url = 'http://moody-zoos-return-35-232-142-40.loca.lt/api/v1/generate'
+    url = api_link + "generate"
     request_body = {"prompt" : text_prompt}
 
     text_output = requests.post(url, json = request_body)
@@ -27,5 +27,5 @@ def process_prompt(text_prompt):
 
     return text_prompt
     
-userInput=input()
+userInput = input()
 print(process_prompt(userInput))
