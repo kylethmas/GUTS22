@@ -44,7 +44,7 @@ def art():
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
         session_message = ("Your " + session['art_style'] + " adventure begins in " + session['location'] + "!\n")
-        session['prompt_start'] = session_message
+        session['prompt_start'] = session['art_style'] + "." + session['location'] + "D&D Greg Rutkowski high-detail quality-shading" 
         session['text_display'] =  []
         session['text_display'].append(session_message)
         return redirect(url_for('game'))
@@ -76,15 +76,18 @@ def listToString(s):
     return str1
 
 def play_game(user_input):
-    
+    output_url = ""
+
     model = replicate.models.get("stability-ai/stable-diffusion")
     if user_input != "":
         user_input = user_input + "."
         session['text_display'].append(user_input )
 
-        kobold_ai_returned = generate_response(user_input, "http://crazy-buckets-smoke-35-239-143-40.loca.lt/api/v1/")
+        kobold_ai_returned = generate_response(user_input, "http://fair-wolves-look-35-239-202-6.loca.lt/api/v1/")
         print(kobold_ai_returned)
-        session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+        session['prompt_start'] = user_input + kobold_ai_returned + "." + "D&D Greg Rutkowski high-detail quality-shading" + session['prompt_start']
+        #session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+        #kobold_ai_returned + "." + session['prompt_start']
         session['text_display'].append(kobold_ai_returned)
         
     print(user_input)
