@@ -53,7 +53,7 @@ def game():
     return_type = play_game(user_input)
     if request.method == 'POST':
         user_input = request.form['user_input']
-        while user_input.lower() != "quit": #user input never is quit :)
+        while user_input.lower() != "quit.": #user input never is quit :)
             #edit this to do full stops
             return play_game(user_input)
             #return render_template('game.html', user_image = output_url)
@@ -63,14 +63,18 @@ def play_game(user_input):
     
     model = replicate.models.get("stability-ai/stable-diffusion")
     if user_input != "":
-        session['prompt_start'] = user_input + "." + session['prompt_start']
         
-    print(session['prompt_start'])
-    #print(generate_response(user_input + ".", "http://bitter-beds-begin-35-238-79-164.loca.lt/api/v1/"))
+        user_input = user_input + "."
+        kobold_ai_returned = generate_response(user_input, "http://warm-ads-ring-34-133-140-19.loca.lt/api/v1/")
+        print(kobold_ai_returned)
+        session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+        
+    print(user_input)
+    
     
     output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
     print(output_url)
-    return render_template('game.html', user_image = output_url, page_text = ' TEST text')
+    return render_template('game.html', user_image = output_url, page_text = session['prompt_start'])
     #print("in the game")
     #print(session['location'])
     
