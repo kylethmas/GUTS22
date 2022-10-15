@@ -31,15 +31,16 @@ def index():
 @app.route("/location", methods=['GET', 'POST'])   
 def location():
     if request.method == 'POST':
-        #print(request.form['location'])
-        print("I SHOULD BE MOVIN")
+        print(request.form['location'])
+        session['location'] = request.form['location']
         return redirect(url_for('art'))#, user_image = output_url)
     return render_template('location.html')
     
 @app.route("/art_style", methods=['GET', 'POST'])   
 def art():
     if request.method == 'POST':
-        #print(request.form['art style'])
+        print(request.form['art_style'])
+        session['art_style'] = request.form['art_style']
         return redirect(url_for('game'))#, user_image = output_url)
     return render_template('art_style.html')
     
@@ -50,7 +51,10 @@ def game():
     #output_url = model.predict(prompt="electric sheep, neon, synthwave")[0]
     #print(output_url)
     #return render_template('game.html', user_image = output_url)
-    #return render_template('game.html')
+    print("in the game")
+    print(session['location'])
+    return render_template('game.html')
     #webbrowser.open(output_url)
-    print("edited this out so i dont use up all my API time")
+    #print("edited this out so i dont use up all my API time")
+    #return render_template('location.html')
 
