@@ -8,6 +8,8 @@ import replicate
 import webbrowser
 from PIL import Image
 import urllib.request
+from app.main import main
+from app.kobold_ai import generate_response, process_prompt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = uuid4().hex
@@ -52,15 +54,19 @@ def game():
     if request.method == 'POST':
         user_input = request.form['user_input']
         while user_input.lower() != "quit": #user input never is quit :)
+            #edit this to do full stops
             return play_game(user_input)
             #return render_template('game.html', user_image = output_url)
     return return_type
     
 def play_game(user_input):
+    
     model = replicate.models.get("stability-ai/stable-diffusion")
     if user_input != "":
-        session['prompt_start'] = user_input + "," + session['prompt_start']
+        session['prompt_start'] = user_input + "." + session['prompt_start']
+        
     print(session['prompt_start'])
+    #print(generate_response(user_input + ".", "http://bitter-beds-begin-35-238-79-164.loca.lt/api/v1/"))
     
     output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
     print(output_url)
