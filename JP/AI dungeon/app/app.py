@@ -33,7 +33,7 @@ def location():
     if request.method == 'POST':
         print(request.form['location'])
         session['location'] = request.form['location']
-        return redirect(url_for('art'))#, user_image = output_url)
+        return redirect(url_for('art'))
     return render_template('location.html')
     
 @app.route("/art_style", methods=['GET', 'POST'])   
@@ -41,7 +41,7 @@ def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
-        return redirect(url_for('game'))#, user_image = output_url)
+        return redirect(url_for('game'))
     return render_template('art_style.html')
     
 @app.route("/game", methods=['GET', 'POST'])   
