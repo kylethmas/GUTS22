@@ -4,8 +4,6 @@ import requests
 
 def generate_response(text_prompt, api_link):
 
-    text_prompt = process_prompt(text_prompt)
-
     url = api_link + "generate"
     request_body = {"prompt" : text_prompt}
 
@@ -43,3 +41,4 @@ def process_prompt(text_prompt):
         text_prompt = "You " + text_prompt
 
     return text_prompt
+
