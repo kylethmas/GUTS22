@@ -22,7 +22,7 @@ def connect():
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        return render_template('game.html')
+        return game() #render_template('game.html')
     return render_template('index.html')
     
 @app.route("/", methods=['GET', 'POST'])   
