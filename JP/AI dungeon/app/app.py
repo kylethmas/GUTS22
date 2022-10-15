@@ -43,7 +43,7 @@ def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
-        session_message = ("Your " + session['art_style'] + " adventure begins in " + session['location'] + "!")
+        session_message = ("Your " + session['art_style'] + " adventure begins in " + session['location'] + "!\n")
         session['prompt_start'] = session_message
         session['text_display'] =  []
         session['text_display'].append(session_message)
@@ -82,7 +82,7 @@ def play_game(user_input):
         user_input = user_input + "."
         session['text_display'].append(user_input + "\n")
         
-        kobold_ai_returned = generate_response(user_input, "http://warm-ads-ring-34-133-140-19.loca.lt/api/v1/")
+        kobold_ai_returned = generate_response(user_input, "http://crazy-buckets-smoke-35-239-143-40.loca.lt/api/v1/")
         print(kobold_ai_returned)
         session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
         session['text_display'].append(kobold_ai_returned + "\n")
