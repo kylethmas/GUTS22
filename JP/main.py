@@ -1,7 +1,7 @@
 from kobold_ai import generate_response, process_prompt
 from stable_diffusion import get_image
 
-user_input=input("Enter input")
+user_input=input("Enter input: ")
 
 correct_prompt = process_prompt(user_input)
 
