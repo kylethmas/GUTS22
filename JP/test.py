@@ -1,13 +1,13 @@
 import requests
 
-def generate_prompt(text_prompt, api_link):
+def generate_response(text_prompt, api_link):
 
     url = api_link + "generate"
     request_body = {"prompt" : text_prompt}
 
-    text_output = requests.post(url, json = request_body)
+    text_response = requests.post(url, json = request_body)
 
-    return text_output.json()['results'][0]['text'] #returns a string
+    return text_response.json()['results'][0]['text'] #returns a string
 
 def process_prompt(text_prompt):
 
