@@ -64,7 +64,7 @@ def play_game(user_input):
     
     output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
     print(output_url)
-    return render_template('game.html', user_image = output_url)
+    return render_template('game.html', user_image = output_url, page_text = ' TEST text')
     #print("in the game")
     #print(session['location'])
     
