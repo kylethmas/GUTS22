@@ -43,9 +43,10 @@ def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
-        session['prompt_start'] = session['location'] + "," + session['art_style']
+        session_message = ("Your " + session['art_style'] + " adventure begins in " + session['location'] + "!")
+        session['prompt_start'] = session_message
         session['text_display'] =  []
-        session['text_display'].append("Your " + session['art_style'] + " adventure begins in (a) " + session['location'] + "!")
+        session['text_display'].append(session_message)
         return redirect(url_for('game'))
     return render_template('art_style.html')
     
