@@ -44,6 +44,8 @@ def art():
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
         session['prompt_start'] = session['location'] + "," + session['art_style']
+        session['text_display'] =  []
+        session['text_display'].append("Your " + session['art_style'] + " adventure begins in (a) " + session['location'] + "!")
         return redirect(url_for('game'))
     return render_template('art_style.html')
     
@@ -63,18 +65,24 @@ def play_game(user_input):
     
     model = replicate.models.get("stability-ai/stable-diffusion")
     if user_input != "":
-        
         user_input = user_input + "."
+        session['text_display'].append(user_input + "\n")
+        
         kobold_ai_returned = generate_response(user_input, "http://warm-ads-ring-34-133-140-19.loca.lt/api/v1/")
         print(kobold_ai_returned)
         session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+        session['text_display'].append(kobold_ai_returned + "\n")
         
     print(user_input)
-    
-    
-    output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
-    print(output_url)
-    return render_template('game.html', user_image = output_url, page_text = session['prompt_start'])
+    output_url = ""
+    try:
+        output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
+        print(output_url)
+        
+    except:
+        play_game(user_input)
+        
+    return render_template('game.html', user_image = output_url, page_text = session['text_display'])
     #print("in the game")
     #print(session['location'])
     
