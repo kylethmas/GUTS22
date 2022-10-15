@@ -1,5 +1,7 @@
 import requests
 
+#api_link=http://bitter-beds-begin-35-238-79-164.loca.lt/api/v1/
+
 def generate_response(text_prompt, api_link):
 
     url = api_link + "generate"
