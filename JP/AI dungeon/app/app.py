@@ -41,21 +41,31 @@ def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
+        session['prompt_start'] = session['location'] + "," + session['art_style']
         return redirect(url_for('game'))
     return render_template('art_style.html')
     
 @app.route("/game", methods=['GET', 'POST'])   
 def game():
+    user_input = "";
+    return_type = play_game(user_input)
+    if request.method == 'POST':
+        user_input = request.form['user_input']
+        while user_input.lower() != "quit": #user input never is quit :)
+            return play_game(user_input)
+            #return render_template('game.html', user_image = output_url)
+    return return_type
+    
+def play_game(user_input):
     model = replicate.models.get("stability-ai/stable-diffusion")
-    #this just takes us to the lil website - we dont like this
-    prompt_start = session['location'] + "," + session['art_style']
-    output_url = model.predict(prompt = prompt_start)[0] #prompt="electric sheep, neon, synthwave")[0]
-    #print(output_url)
+    if user_input != "":
+        session['prompt_start'] = user_input + "," + session['prompt_start']
+    print(session['prompt_start'])
+    
+    output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
+    print(output_url)
     return render_template('game.html', user_image = output_url)
     #print("in the game")
     #print(session['location'])
+    
     #return render_template('game.html')
-    #webbrowser.open(output_url)
-    #print("edited this out so i dont use up all my API time")
-    #return render_template('location.html')
-
