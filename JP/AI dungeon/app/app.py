@@ -16,14 +16,16 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 socketio = SocketIO(app)
+
 @socketio.on('connect')
 def connect():
     session['sid'] = request.sid
-    
+
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
+<<<<<<< HEAD
         return redirect(url_for('location'))
     return render_template('index.html')
     
@@ -51,3 +53,4 @@ def game():
     #return render_template('game.html', user_image = output_url)
     #return render_template('game.html')
     #webbrowser.open(output_url)
+
