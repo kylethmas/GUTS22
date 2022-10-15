@@ -61,7 +61,20 @@ def game():
             return play_game(user_input)
             #return render_template('game.html', user_image = output_url)
     return return_type
-    
+
+
+def listToString(s):
+
+    # initialize an empty string
+    str1 = ""
+
+    # traverse in the string
+    for ele in s:
+        str1 += ele
+
+    # return string
+    return str1
+
 def play_game(user_input):
     
     model = replicate.models.get("stability-ai/stable-diffusion")
@@ -82,8 +95,9 @@ def play_game(user_input):
         
     except:
         play_game(user_input)
-        
-    return render_template('game.html', user_image = output_url, page_text = session['text_display'])
+
+    page_text = listToString(session['text_display'])
+    return render_template('game.html', user_image = output_url, page_text = page_text)
     #print("in the game")
     #print(session['location'])
     
