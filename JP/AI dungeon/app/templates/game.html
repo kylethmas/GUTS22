@@ -6,9 +6,11 @@
 	<!-- <h2 style = "margin-bottom: 10px; padding-bottom: 0px;"> typey type type ~ </h2> -->
 	<img src="{{ user_image }}" alt="User Image">
 
-    {% for page in page_text %}
-    	{{ page }}</br>
-    {% endfor %}
+	<p class="text-center">
+		{% for page in page_text %}
+			{{ page }}</br>
+		{% endfor %}
+	</p>
 
 	<P> What do you do now? </P>
 	<form method='POST'>
