@@ -26,6 +26,3 @@ def process_prompt(text_prompt):
         text_prompt = "You " + text_prompt
 
     return text_prompt
-    
-userInput = input()
-print(process_prompt(userInput))
