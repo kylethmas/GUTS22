@@ -25,7 +25,6 @@ def connect():
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-<<<<<<< HEAD
         return redirect(url_for('location'))
     return render_template('index.html')
     
