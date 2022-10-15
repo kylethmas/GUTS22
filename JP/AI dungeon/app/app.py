@@ -41,6 +41,7 @@ def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
+        session['prompt_start'] = session['location'] + "," + session['art_style']
         return redirect(url_for('game'))
     return render_template('art_style.html')
     
@@ -50,19 +51,18 @@ def game():
     return_type = play_game(user_input)
     if request.method == 'POST':
         user_input = request.form['user_input']
-        while user_input.lower() != "quit":
+        while user_input.lower() != "quit": #user input never is quit :)
             return play_game(user_input)
             #return render_template('game.html', user_image = output_url)
     return return_type
     
 def play_game(user_input):
     model = replicate.models.get("stability-ai/stable-diffusion")
+    if user_input != "":
+        session['prompt_start'] = user_input + "," + session['prompt_start']
+    print(session['prompt_start'])
     
-    prompt_start = session['location'] + "," + session['art_style']
-    full_prompt = prompt_start + "," + user_input
-    print(prompt_start + "," + user_input)
-    
-    output_url = model.predict(prompt = full_prompt)[0] #prompt="electric sheep, neon, synthwave")[0]
+    output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
     print(output_url)
     return render_template('game.html', user_image = output_url)
     #print("in the game")
