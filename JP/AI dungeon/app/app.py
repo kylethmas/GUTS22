@@ -80,12 +80,12 @@ def play_game(user_input):
     model = replicate.models.get("stability-ai/stable-diffusion")
     if user_input != "":
         user_input = user_input + "."
-        session['text_display'].append(user_input + "\n")
-        
+        session['text_display'].append(user_input )
+
         kobold_ai_returned = generate_response(user_input, "http://crazy-buckets-smoke-35-239-143-40.loca.lt/api/v1/")
         print(kobold_ai_returned)
         session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
-        session['text_display'].append(kobold_ai_returned + "\n")
+        session['text_display'].append(kobold_ai_returned)
         
     print(user_input)
     output_url = ""
@@ -96,7 +96,7 @@ def play_game(user_input):
     except:
         play_game(user_input)
 
-    page_text = listToString(session['text_display'])
+    page_text = session['text_display'] #listToString(session['text_display'])
     return render_template('game.html', user_image = output_url, page_text = page_text)
     #print("in the game")
     #print(session['location'])
