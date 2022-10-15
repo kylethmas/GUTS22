@@ -6,6 +6,8 @@ from flask_session import Session
 from flask import request
 import replicate
 import webbrowser
+from PIL import Image
+import urllib.request
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = uuid4().hex
@@ -28,6 +30,8 @@ def index():
 @app.route("/", methods=['GET', 'POST'])   
 def game():
     model = replicate.models.get("stability-ai/stable-diffusion")
+    #this just takes us to the lil website - we dont like this
     output_url = model.predict(prompt="electric sheep, neon, synthwave")[0]
     print(output_url)
-    webbrowser.open(output_url)
+    return render_template('game.html', user_image = output_url)
+    #webbrowser.open(output_url)
