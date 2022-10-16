@@ -12,16 +12,16 @@ def generate_response(text_prompt, api_link):
 
     found = False
     i = 0
-    #while found is False and i < len(text_response):
-     #   if text_response[-i-1] == ',' or text_response[-i-1] == '.':
+    while found is False and i < len(text_response):
+        if text_response[-i-1] == ',' or text_response[-i-1] == '.':
             
-      #      end_of_sentence = len(text_response) - i
-       #     text_response = text_response[:end_of_sentence]
+            end_of_sentence = len(text_response) - i
+            text_response = text_response[:end_of_sentence]
 
-        #    if text_response[-1] == ',':
-         #       text_response = text_response[:-1] + "."
-          #  found = True
-        #i+=1
+            if text_response[-1] == ',':
+                text_response = text_response[:-1] + "."
+            found = True
+        i+=1
 
     return text_response
 
