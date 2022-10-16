@@ -38,27 +38,28 @@ def location():
         return redirect(url_for('art'))
     return render_template('location.html')
     
-@app.route("/art_style", methods=['GET', 'POST'])   
+@app.route("/art_style", methods=['GET', 'POST'])    
 def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
-        session_message = ("Your " + session['art_style'] + " adventure begins in " + session['location'] + "!\n")
-        session['prompt_start'] = session['art_style'] + "." + session['location'] + "D&D Greg Rutkowski high-detail quality-shading" 
+        session['prompt_start'] = session['location'] + "," + session['art_style']
         session['text_display'] =  []
-        session['text_display'].append(session_message)
+        session['text_display'].append("Your " + session['art_style'] + " adventure begins in (a) " + session['location'] + "!")
         return redirect(url_for('game'))
     return render_template('art_style.html')
     
 @app.route("/game", methods=['GET', 'POST'])   
 def game():
+    print("hello?")
     user_input = "";
-    return_type = play_game(user_input)
+    return_type = play_game(user_input,0)
     if request.method == 'POST':
+        #]print("are we here too?")
         user_input = request.form['user_input']
-        while user_input.lower() != "quit.": #user input never is quit :)
-            #edit this to do full stops
-            return play_game(user_input)
+        #while user_input.lower() != "quit": #user input never is quit :)
+        print(user_input)
+        return play_game(user_input,0)
             #return render_template('game.html', user_image = output_url)
     return return_type
 
@@ -75,29 +76,43 @@ def listToString(s):
     # return string
     return str1
 
-def play_game(user_input):
+def play_game(user_input, count):
     output_url = ""
+    
 
-    model = replicate.models.get("stability-ai/stable-diffusion")
+    print("hi")
     if user_input != "":
+        print("can't get in here?")
         user_input = user_input + "."
-        session['text_display'].append(user_input )
-
-        kobold_ai_returned = generate_response(user_input, "http://fair-wolves-look-35-239-202-6.loca.lt/api/v1/")
+        session['text_display'].append(user_input)
+        try:
+            kobold_ai_returned = generate_response(user_input, "http://two-cars-hope-35-188-199-162.loca.lt/api/v1/")
+        except:
+            output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
+            return render_template('game.html', user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
         print(kobold_ai_returned)
         session['prompt_start'] = user_input + kobold_ai_returned + "." + "D&D Greg Rutkowski high-detail quality-shading" + session['prompt_start']
         #session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
         #kobold_ai_returned + "." + session['prompt_start']
         session['text_display'].append(kobold_ai_returned)
         
-    print(user_input)
-    output_url = ""
+    print(session['prompt_start'])
+    
     try:
+        model = replicate.models.get("stability-ai/stable-diffusion")
         output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
         print(output_url)
         
     except:
-        play_game(user_input)
+       #print(session['prompt_start'])
+       #output_url = "https://thumbs.dreamstime.com/b/error-rubber-stamp-word-error-inside-illustration-109026446.jpg"
+       if count >= 10:
+            print("ERROR - Your replicate token expired")
+            output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
+            session['text_display'].append("ERROR - Your replicate token expired")
+            return render_template('game.html', user_image = output_url, page_text = session['text_display'])
+       count = count + 1
+       play_game(user_input,count)
 
     page_text = session['text_display'] #listToString(session['text_display'])
     return render_template('game.html', user_image = output_url, page_text = page_text)
