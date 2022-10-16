@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='header'>
+		<a href='/'><button class='play' type="submit">Home</button> </a>
+</div>
+
+<div class='main'>
+	<!-- <h2 style = "margin-bottom: 10px; padding-bottom: 0px;"> typey type type ~ </h2> -->
+	<img src="{{ img_link }}" alt="User Image">
+
+	<p class="text-center">
+		{% for page in error_text %}
+			{{ page }}</br>
+		{% endfor %}
+	</p>
+
+	<a href='/'><P> Click me to restart :) </P>
+	
+</div>
+
+{% endblock %}
