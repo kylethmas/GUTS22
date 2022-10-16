@@ -43,7 +43,7 @@ def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
-        session['prompt_start'] = session['location'] + "," + session['art_style']
+        session['prompt_start'] = session['location'] + "," + session['art_style'] + "," + "D&D Greg Rutkowski high-detail quality-shading"
         session['text_display'] =  []
         session['text_display'].append("Your " + session['art_style'] + " adventure begins in (a) " + session['location'] + "!")
         return redirect(url_for('game'))
@@ -89,7 +89,6 @@ def play_game(user_input, count):
         print(output_url)
         
         if user_input != "":
-            print("can't get in here?")
             user_input = user_input + "."
             session['text_display'].append(user_input)
             try:
@@ -116,7 +115,9 @@ def play_game(user_input, count):
             return render_template('game.html', user_image = output_url, page_text = ["ERROR - Your replicate token expired"])
        count = count + 1
        play_game(user_input,count)
-
+    
+    print("!!!")
+    print(output_url)
     #page_text = session['text_display'] #listToString(session['text_display'])
     return render_template('game.html', user_image = output_url, page_text = session['text_display'])
     #print("in the game")
