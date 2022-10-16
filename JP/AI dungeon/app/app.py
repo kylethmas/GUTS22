@@ -96,7 +96,7 @@ def play_game(user_input, count):
     try:
         model = replicate.models.get("stability-ai/stable-diffusion")
         output_url = model.predict(prompt=session['prompt_start'])[0]  # prompt="electric sheep, neon, synthwave")[0]
-        print(output_url)
+        #print(output_url)
 
         if user_input != "":
             user_input = user_input + "."
@@ -109,11 +109,10 @@ def play_game(user_input, count):
                 # error(user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
                 return render_template('game.html', user_image=output_url,
                                        page_text=["ERROR - Your kobold url has expired"])
-            print(kobold_ai_returned)
-            session[
-                'prompt_start'] = user_input + kobold_ai_returned + "." + "D&D Greg Rutkowski high-detail quality-shading" + \
+            #print(kobold_ai_returned)
+            session['prompt_start'] = "D&D Greg Rutkowski high-detail quality-shading" + user_input + kobold_ai_returned +  \
                                   session['prompt_start']
-            session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+            #session['prompt_start'] = "." + sekobold_ai_returned + ssion['prompt_start']
             kobold_ai_returned + "." + session['prompt_start']
             session['text_display'].append(kobold_ai_returned)
 
