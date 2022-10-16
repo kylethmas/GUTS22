@@ -51,7 +51,6 @@ def art():
     
 @app.route("/game", methods=['GET', 'POST'])   
 def game():
-    print("hello?")
     user_input = "";
     return_type = play_game(user_input,0)
     if request.method == 'POST':
@@ -63,7 +62,11 @@ def game():
             #return render_template('game.html', user_image = output_url)
     return return_type
 
+#@app.route("/error", methods=['GET', 'POST'])   
+#def error(img_link, error_text):
+ #   return render_template('error.html', user_image = img_link, page_text)
 
+    
 def listToString(s):
 
     # initialize an empty string
@@ -89,7 +92,8 @@ def play_game(user_input, count):
             kobold_ai_returned = generate_response(user_input, "http://two-cars-hope-35-188-199-162.loca.lt/api/v1/")
         except:
             output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
-            return render_template('game.html', user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
+            #error(user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
+            return render_template('error.html', user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
         print(kobold_ai_returned)
         session['prompt_start'] = user_input + kobold_ai_returned + "." + "D&D Greg Rutkowski high-detail quality-shading" + session['prompt_start']
         #session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
@@ -104,13 +108,12 @@ def play_game(user_input, count):
         print(output_url)
         
     except:
-       #print(session['prompt_start'])
-       #output_url = "https://thumbs.dreamstime.com/b/error-rubber-stamp-word-error-inside-illustration-109026446.jpg"
        if count >= 10:
             print("ERROR - Your replicate token expired")
             output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
-            session['text_display'].append("ERROR - Your replicate token expired")
-            return render_template('game.html', user_image = output_url, page_text = session['text_display'])
+            session['text_display'].append("ERROR - Your replicate token has expired")
+            #error(user_image = output_url, page_text = ["ERROR - Your replicate token expired"])
+            return render_template('error.html', user_image = output_url, page_text = session['text_display'])
        count = count + 1
        play_game(user_input,count)
 
