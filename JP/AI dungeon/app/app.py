@@ -56,9 +56,9 @@ def game():
     if request.method == 'POST':
         #]print("are we here too?")
         user_input = request.form['user_input']
-        #while user_input.lower() != "quit": #user input never is quit :)
-        print(user_input)
-        return play_game(user_input,0)
+        while user_input.lower() != "quit": #user input never is quit :)
+            print(user_input)
+            return play_game(user_input,0)
             #return render_template('game.html', user_image = output_url)
     return return_type
 
@@ -81,44 +81,44 @@ def listToString(s):
 
 def play_game(user_input, count):
     output_url = ""
-    
-
-    print("hi")
-    if user_input != "":
-        print("can't get in here?")
-        user_input = user_input + "."
-        session['text_display'].append(user_input)
-        try:
-            kobold_ai_returned = generate_response(user_input, "http://two-cars-hope-35-188-199-162.loca.lt/api/v1/")
-        except:
-            output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
-            #error(user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
-            return render_template('error.html', user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
-        print(kobold_ai_returned)
-        session['prompt_start'] = user_input + kobold_ai_returned + "." + "D&D Greg Rutkowski high-detail quality-shading" + session['prompt_start']
-        #session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
-        #kobold_ai_returned + "." + session['prompt_start']
-        session['text_display'].append(kobold_ai_returned)
-        
-    print(session['prompt_start'])
-    
+    #model = replicate.models.get("stability-ai/stable-diffusion")
+    #output_url = model.predict(prompt = session['prompt_start'])[0]
     try:
         model = replicate.models.get("stability-ai/stable-diffusion")
         output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
         print(output_url)
         
+        if user_input != "":
+            print("can't get in here?")
+            user_input = user_input + "."
+            session['text_display'].append(user_input)
+            try:
+                kobold_ai_returned = generate_response(user_input, "http://tidy-clocks-exist-34-135-174-206.loca.lt/api/v1/")
+            except:
+                output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
+                #error(user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
+                return render_template('game.html', user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
+            print(kobold_ai_returned)
+            session['prompt_start'] = user_input + kobold_ai_returned + "." + "D&D Greg Rutkowski high-detail quality-shading" + session['prompt_start']
+            session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+            kobold_ai_returned + "." + session['prompt_start']
+            session['text_display'].append(kobold_ai_returned)
+        
+        print(session['prompt_start'])
+        
     except:
+       print("THIS INSIDE ERROR LOOP")
        if count >= 10:
             print("ERROR - Your replicate token expired")
             output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
             session['text_display'].append("ERROR - Your replicate token has expired")
             #error(user_image = output_url, page_text = ["ERROR - Your replicate token expired"])
-            return render_template('error.html', user_image = output_url, page_text = session['text_display'])
+            return render_template('game.html', user_image = output_url, page_text = ["ERROR - Your replicate token expired"])
        count = count + 1
        play_game(user_input,count)
 
-    page_text = session['text_display'] #listToString(session['text_display'])
-    return render_template('game.html', user_image = output_url, page_text = page_text)
+    #page_text = session['text_display'] #listToString(session['text_display'])
+    return render_template('game.html', user_image = output_url, page_text = session['text_display'])
     #print("in the game")
     #print(session['location'])
     
