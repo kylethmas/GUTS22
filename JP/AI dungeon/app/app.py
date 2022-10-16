@@ -43,7 +43,10 @@ def art():
     if request.method == 'POST':
         print(request.form['art_style'])
         session['art_style'] = request.form['art_style']
-        session['prompt_start'] = session['location'] + "," + session['art_style']
+        session_message = ("Your " + session['art_style'] + " adventure begins in " + session['location'] + "!\n")
+        session['prompt_start'] = session['art_style'] + "." + session['location'] + "D&D Greg Rutkowski high-detail quality-shading" 
+        session['text_display'] =  []
+        session['text_display'].append(session_message)
         return redirect(url_for('game'))
     return render_template('art_style.html')
     
@@ -58,23 +61,46 @@ def game():
             return play_game(user_input)
             #return render_template('game.html', user_image = output_url)
     return return_type
-    
+
+
+def listToString(s):
+
+    # initialize an empty string
+    str1 = ""
+
+    # traverse in the string
+    for ele in s:
+        str1 += ele
+
+    # return string
+    return str1
+
 def play_game(user_input):
-    
+    output_url = ""
+
     model = replicate.models.get("stability-ai/stable-diffusion")
     if user_input != "":
-        
         user_input = user_input + "."
-        kobold_ai_returned = generate_response(user_input, "http://warm-ads-ring-34-133-140-19.loca.lt/api/v1/")
+        session['text_display'].append(user_input )
+
+        kobold_ai_returned = generate_response(user_input, "http://fair-wolves-look-35-239-202-6.loca.lt/api/v1/")
         print(kobold_ai_returned)
-        session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+        session['prompt_start'] = user_input + kobold_ai_returned + "." + "D&D Greg Rutkowski high-detail quality-shading" + session['prompt_start']
+        #session['prompt_start'] = kobold_ai_returned + "." + session['prompt_start']
+        #kobold_ai_returned + "." + session['prompt_start']
+        session['text_display'].append(kobold_ai_returned)
         
     print(user_input)
-    
-    
-    output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
-    print(output_url)
-    return render_template('game.html', user_image = output_url, page_text = session['prompt_start'])
+    output_url = ""
+    try:
+        output_url = model.predict(prompt = session['prompt_start'])[0] #prompt="electric sheep, neon, synthwave")[0]
+        print(output_url)
+        
+    except:
+        play_game(user_input)
+
+    page_text = session['text_display'] #listToString(session['text_display'])
+    return render_template('game.html', user_image = output_url, page_text = page_text)
     #print("in the game")
     #print(session['location'])
     
