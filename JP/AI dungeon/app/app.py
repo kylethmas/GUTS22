@@ -93,7 +93,7 @@ def play_game(user_input, count):
             user_input = user_input + "."
             session['text_display'].append(user_input)
             try:
-                kobold_ai_returned = generate_response(user_input, "http://tidy-clocks-exist-34-135-174-206.loca.lt/api/v1/")
+                kobold_ai_returned = generate_response(user_input, "http://tidy-clocks-exist-34-135-174-207.loca.lt/api/v1/")
             except:
                 output_url = "https://images.clipartlogo.com/files/istock/previews/9266/92666913-error-message-on-tablet.jpg"
                 #error(user_image = output_url, page_text = ["ERROR - Your kobold url has expired"])
